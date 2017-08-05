@@ -1,0 +1,10 @@
+extends layout
+block content
+	if(data)
+		ul.s_list
+			each item in data
+				li 
+					img(src="/images/#{item.photo}", width="65px" height="65px")
+					a(href='/userMain/#{item._id}' style='margin-left:30px;') #{item.username}
+	else
+		p	您还没有被人关注哟，快去发表文章让大家发现你的才华吧	

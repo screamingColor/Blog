@@ -1,0 +1,30 @@
+extends layout
+block content
+	if(data)
+		ul.s_list
+			each items in data
+				each item in items
+					li 	
+						a(href='/article/#{item.user._id}/#{item._id}')《#{item.title}》 
+						span ------ 作者：  
+						a(href='/userMain/#{item.user._id}')  #{item.user.username}
+						.btn.btn-danger(data-postid = '#{item._id}') 取消收藏
+	else
+		p	您还没有收藏的文章
+
+	script.
+		$('.btn.btn-danger').click(function(){
+			var id=$(this).data('postid');
+			var self=this
+			$.ajax({
+				url:'/saveArticle',
+				catch:false,
+				data:{
+					state:1,
+					id:id
+				},
+				success:function(){
+					$(self).parent().remove();
+				}
+			});
+		});	

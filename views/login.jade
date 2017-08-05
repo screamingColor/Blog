@@ -1,0 +1,38 @@
+doctype html
+html
+	head
+		include includes/head
+	body
+		.container.contentTop
+			.row
+				.col-md-4
+					form(method="POST", action="/login")
+						h2 登陆
+						.form-group
+							label(for="loginName") 用户名
+							input#signupName.form-control(name="user[username]", type="text",required="required")
+						.form-group
+							label(for="loginPassword") 密码
+							input#signupPassword.form-control(name="user[password]", type="password",required="required")
+						.text-center
+							button.btn.btn-primary(type="submit") 提交
+
+						div( id="login_b")
+
+							a( href="signup")
+								.btn.btn-primary.btn-xs 免费注册
+		if err
+			#info_l #{err}					
+
+
+		include includes/footer
+
+	script.
+		var info = $("#info_l");
+		setTimeout(function(){
+		info.fadeOut();
+		},1000);
+
+
+
+					

@@ -1,0 +1,127 @@
+extends layout
+block content
+	#content
+		#left_content
+			.all_block
+				.block_head 个人资料
+				.block_body
+					#photo_name
+						img(src="/images/#{post.user.photo}", alt="#{post.user.username}", width="100px" height="100px")
+						p #{post.user.username}
+
+			a(href="/userMain/#{post.user._id}")
+				.btn.btn-primary.full_line 主页
+			a(href="/post")
+				.btn.btn-warning.full_line 写新文章
+
+			.all_block.block_has
+				.block_head 全部文章
+				.block_body
+					ul
+						each items in info
+							li
+								a(href="/article/#{items.user._id}/#{items._id}") #{items.title}
+
+		#right_content
+			.block_body
+				#a_title  #{post.title}
+				ul.list_inline#a_detail
+					li #{post.meta.createAt} 
+					li
+						span(class=" glyphicon glyphicon-edit") 评论(#{post.commentL})
+					li
+						span(class=" glyphicon glyphicon-list-alt") 阅读(#{post.pv})
+					if user	
+						if (user.username === post.user.username)
+							li
+								a(href="/edit/#{post._id}") 编辑
+							li
+								a(href="/delete/#{post._id}") 删除
+						else 
+							li
+								a.save_a 收藏这篇文章	
+				p 版权声明 ：未经博主允许不得转载。
+				#a_content    
+
+			.block_body.block_has
+				.comment_head 查看评论
+				each item in comments
+					.comment_body
+						if item.from
+							h4
+								a.headP(href="#comments", data-cid="#{item._id}", data-tid="#{item.from._id}")   #{item.from.username} :
+							h6 #{item.meta.createAt}
+							.contentC #{item.content}
+						else
+							a.callback.headP(href="#comments", data-cid="#{item._id}") 回复
+
+						if item.reply && item.reply.length > 0
+							each reply in item.reply
+								.sub
+									h5
+										a.headP(href="#comments",data-cid="#{item._id}", data-tid="#{reply.from._id}") #{reply.from.username}
+										small 回复&nbsp;#{reply.to.username} :
+									h6 #{item.meta.createAt}
+									.contentC #{reply.content}
+
+				.comment_head 发表评论
+					#comments
+				if user
+					.comment_submit
+
+						form#commentForm(method="POST", action="/user/comment")
+							input(type="hidden", name="comment[post]", value="#{post._id}")
+							input(type="hidden", name="comment[to]", value="#{post.user._id}")
+							if user
+								input(type="hidden", name="comment[from]", value="#{user._id}")
+							table
+								tr
+									th 用户名：
+									td #{user.username}
+								tr
+									th 评论内容：
+									td
+								tr
+									th
+									td
+										textarea#textareaId(name="comment[content]",row='4',placeholder="正文")
+								tr
+									th
+									td
+										button.btn.btn-primary(type="submit") 提交
+
+				else
+					a#login_c(href="/login") ♥  登录后可评论  ♥
+
+	script(src="/javascripts/detail.js")
+	script.
+
+			$('#a_content').html(!{JSON.stringify(post.content)});
+			if(!{JSON.stringify(ifSave)}==1){
+				$('.save_a').addClass('save');
+			}
+			$('.save_a').click(function(){
+				var self=this;
+				if($(this).hasClass('save')){
+					state=1;
+					succ=function(){
+						self.className='save_a';
+					};
+				}else{
+					state=0;
+					succ=function(){
+						self.className='save_a save';
+					};
+				}
+				$.ajax({
+					url:'/saveArticle',
+					catch:false,
+					data:{
+						state:state,
+						id:!{JSON.stringify(post._id)}
+					},
+					success:succ
+				});
+			});	
+			
+			

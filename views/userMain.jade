@@ -1,0 +1,98 @@
+extends layout
+block content
+	#content.clearfix
+		.block_body#block_padding
+			table.noborder
+				tr
+					td
+						img(src="/images/#{photo}", alt="#{name}", width="135px" height="135px")
+
+					td
+						#user_show #{name}
+			if(user && user.username === name)
+				form(method="POST",enctype="multipart/form-data", action="/uploadPhoto")
+					label(for="uploadPhoto") 上传头像 :
+					input#uploadPhoto(type="file", name="uploadPhoto")
+					button.btn.btn-info.btn-xs.block_has(type="submit") 确认上传
+			else	
+				if(user)
+					a.subscribe 关注
+		if(user && user.username === name)
+			.block_body.block_has(style="padding:10px 50px")
+				a(href="/post")
+					.btn.btn-primary 写新文章
+				a(href="/myStar/#{id}")
+					.btn.btn-primary 我的关注
+				a(href="/myFollower/#{id}")
+					.btn.btn-primary 关注我的人	
+				a(href="/mySave/#{id}")
+					.btn.btn-primary 我的收藏	
+		.all_block.block_has
+			.block_head 全部文章
+			.block_body
+				if(user && user.username === name)
+					each item in post
+						table.full_line
+							tr
+								th
+									a(href="/article/#{item.user._id}/#{item._id}") #{item.title}
+								td
+									span(class=" glyphicon glyphicon-edit") 评论(#{item.commentL})
+								td
+									span(class=" glyphicon glyphicon-list-alt") 阅读(#{item.pv})
+								td #{item.meta.createAt}
+								td
+									a(href="/edit/#{item._id}") 编辑
+								td
+									a(href="/delete/#{item._id}") 删除
+
+				else
+					each item in post
+						table.full_line
+							tr
+								th
+									a(href="/article/#{item.user._id}/#{item._id}") #{item.title}
+								td
+									span(class=" glyphicon glyphicon-edit") 评论(#{item.commentL})
+								td
+									span(class=" glyphicon glyphicon-list-alt") 阅读(#{item.pv})
+								td #{item.meta.createAt}
+
+
+	script.
+		if(!{JSON.stringify(ifStar)}==1){
+			$('a.subscribe').addClass('star');
+		}
+		function callSever(url,data,success){
+			$.ajax({
+				url:url,
+				catch:false,
+				data:data,
+				success:success
+			});
+		}
+
+		$('a.subscribe').click(function(){
+			var state="";
+			var star_succ="";
+			var self=this;
+			if($(this).hasClass('star')){
+				state=1;
+				star_succ=function(){
+					self.className='subscribe';
+				};
+				
+			}else{
+				state=0;
+				star_succ=function(){
+					console.log('0');
+					self.className='subscribe star';
+				};
+			}
+			var data={
+				id:!{JSON.stringify(id)},
+				state:state
+			}
+			callSever('/star',data,star_succ);
+		});
+

@@ -1,0 +1,16 @@
+extends layout
+block content
+	form#edit(method="POST", action="/update")
+		input(type="hidden", name="post[id]", value="#{post._id}")
+		input(type="hidden", name="post[time]", value="#{post.meta.updateAt}")
+		.form-group
+			textarea.form-control#postTitle(name="post[title]") #{post.title}
+		.form-group
+			textarea#postContent(name="post[content]", row='3') 
+		.text-center
+			button.btn.btn-primary(type="submit") 提交
+
+	script.
+		var edit_c=$(!{JSON.stringify(post.content)}).text();
+		console.log(edit_c);
+		$('#postContent').text(edit_c);

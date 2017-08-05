@@ -1,0 +1,58 @@
+extends layout
+block content
+	div.header_mid.clearfix
+		#img_index
+			img(src="/images/logo.png")
+		div(class="top_nav_search" id="nav_search_form")  <!--搜索框 -->
+			form(action="/search" ,method="GET" )
+				select(name="option" class="no_outline")
+					option 标题
+					option 作者
+
+				input(type="text" class="no_outline" data-tel="search_book" name="q"  placeholder="深入理解node.js" autocomplete="off")
+				input(type="submit" value="搜  索" class="ts_btn")
+
+
+	#content.clearfix
+		#leftContent
+
+
+		#rightContent
+			if(user&&user.role=='admin')
+				a(href="/userList")
+					.btn.btn-warning.full_line 管理后台
+			else		
+				a(href="/post")
+					.btn.btn-warning.full_line 写新文章
+			#ad_content
+				ul#ad_ul
+					li 凤凰台上凤凰游
+					li 凤去台空江自流
+					li 吴宫花草埋幽径
+					li 晋代衣冠成古丘
+					li 三山半落青天外
+					li 二水中分白鹭洲
+					li 总为浮云能蔽日
+					li 长安不见使人愁
+					li 凤凰台上凤凰游
+					li 凤去台空江自流
+					li 吴宫花草埋幽径
+					li 晋代衣冠成古丘
+					li 三山半落青天外
+					li 二水中分白鹭洲
+					li 总为浮云能蔽日
+					li 长安不见使人愁
+				ul#ad_ul1
+
+			.all_block.block_has
+				.block_head 用户推荐
+				.block_body.clearfix
+					each detail in userDetail
+						#recommend
+							a(href="/userMain/#{detail._id}")
+								img(src="/images/#{detail.photo}", alt="#{detail.username}", width="65px" height="65px")
+	
+			
+	script(src="/javascripts/main.js")
+
+

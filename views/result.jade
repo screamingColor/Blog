@@ -1,0 +1,32 @@
+extends layout
+block content
+	div.header_mid
+		div( class="normal-search-content")
+			div(class="top_nav_search" id="nav_search_form")  <!--搜索框 -->
+				form(action="/search" ,method="GET" )
+					select(name="option" class="no_outline")
+						option #{option}
+						option 标题
+						option 作者
+					input(type="text" class="no_outline" data-tel="search_book" name="q"  placeholder="#{q}" autocomplete="off")
+					input(type="submit" value="搜  索" class="ts_btn")
+	.all_block.block_has
+		.block_head 全部结果
+		.block_body
+			if text && text.length>0
+				each item in text
+					table.full_line
+						tr
+							th
+								a(href="/article/#{item.user._id}/#{item._id}") #{item.title}
+
+			else
+				if man && man.length>0
+					each item in man
+						table.full_line
+							tr
+								th
+									a(href="/userMain/#{item._id}") #{item.username}
+
+				else
+					p#block_padding 未查找到匹配的结果

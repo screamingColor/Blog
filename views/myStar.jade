@@ -1,0 +1,28 @@
+extends layout
+block content
+	if(data)
+		ul.s_list
+			each item in data
+				li 
+					img(src="/images/#{item.photo}", width="65px" height="65px")
+					a(href='/userMain/#{item._id}' style='margin-left:30px;') #{item.username}
+					.btn.btn-danger(data-userid = '#{item._id}') 取消关注
+	else
+		p	您还没有关注的人			
+
+	script.
+		$('.btn.btn-danger').click(function(){
+			var id=$(this).data('userid');
+			var self=this
+			$.ajax({
+				url:'/star',
+				catch:false,
+				data:{
+					state:1,
+					id:id
+				},
+				success:function(){
+					$(self).parent().remove();
+				}
+			});
+		});

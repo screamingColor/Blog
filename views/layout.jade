@@ -1,0 +1,38 @@
+doctype html
+html
+  head
+    include includes/head
+
+  body
+    div.warp
+      div.header
+        ul.list_inline
+          if user
+            li
+              span 欢迎您，
+                a(href="/userMain/#{user._id}") 【#{user.username}】
+
+            li
+              span
+                a(href="/logout") 退出
+            li
+              span
+                a(href="/") 首页
+
+          else
+            li
+              span
+                a(href="/login") 登陆
+            li
+              span
+                a(href="/signup") 注册
+            li
+              span
+                a(href="/")  首页
+                
+
+
+    block content
+    include includes/footer
+
+

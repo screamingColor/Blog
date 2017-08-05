@@ -1,0 +1,22 @@
+doctype html
+html
+	head
+		include includes/head
+	body
+		.container.contentTop
+			.row
+				.col-md-4
+					form(method="POST", action="/signup")
+						h2 注册
+
+						.form-group
+							label(for="signupName") 用户名
+							input#signupName.form-control(name="user[username]", type="text",required="required")
+						.form-group
+							label(for="signupPassword") 密码
+							input#signupPassword.form-control(name="user[password]", type="password",required="required")
+
+						.text-center
+							button.btn.btn-primary(type="submit") 提交
+
+	include includes/footer

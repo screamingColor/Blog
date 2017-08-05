@@ -1,0 +1,43 @@
+extends layout
+block content
+   h1= title
+
+   table.table.table-bordered.table-hover
+      thead
+         tr
+            th 文章名称
+            th 发表时间
+            th 作者
+            th 
+           
+      tbody
+         each item in result  
+            tr
+               td    
+                  a(href='/article/#{item.user._id}/#{item._id}') #{item.title}
+               td #{item.meta.createAt}
+               td    
+                  a(href='/userMain/#{item.user._id}') #{item.user.username}
+               td  
+                  a.delete(data-postid="#{item._id}") 删除
+
+                           
+   script.
+      $('a.delete').click(function(){
+         var postId=$(this).data('postid');
+         var self=this;
+         $.ajax({
+            url:'/adminDelete',
+            catch:false,
+            data:{
+               postId:postId
+            },
+            success:function(){
+               $(self).parents('tr').remove();
+            }
+         });
+      });
+      
+
+
+
