@@ -22,5 +22,5 @@ the website is based on node.js
 =======
 网站首页：
 
-![image](https://github.com/screamingColor/Project/blob/master/img/index.png)
+![image](https://github.com/screamingColor/Blog/blob/master/img/index.png)
 （logo含义：文人墨客，这里是承载情感和灵感的平台）
